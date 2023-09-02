@@ -1,10 +1,10 @@
 .home{
     height: auto;
-    align-items: center;
+    margin-left: 80px;
     display: flex;
     justify-content: center;
     flex-direction: column;
-   margin-top: 80px;
+   margin-top: 20px;
 }
 hr{
     width: 60%;
@@ -17,7 +17,7 @@ hr{
    
 }
 .header {
-
+ align-items: flex-start;
 }
 
 .header > .numberInput{
@@ -54,7 +54,7 @@ hr{
     gap: 16px;
 }
 .item{
-    
+    position: relative;
     width: 200px;
     height: 200px;
 }
@@ -64,4 +64,20 @@ hr{
 }
 .selected {
     border: 2px solid blue;
+    opacity: 0.5 ;
+    position: relative;
+    background-color: aqua;   
+    z-index: 500; 
+}
+  .overlay{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+
+  }
+  .icon{
+    font-size: 56px;
+    color: rgb(79, 93, 248);
   }

@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import '../assets/home.css'
-import Header from '../components/Header'
-import Card from '../components/Card'
+
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
+
 const Home = () => {
   const [number, setNumber] = useState('')
   const [data, setData] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
+  
   const handleSetNumber = (e) => {
     setNumber(e.target.value);
     setSelectedCards([]);
   };
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const res = await axios.get(
-          `https://dog.ceo/api/breeds/image/random/${number}`
-        );
-        setData(res.data.message);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchImage();
-  }, [number]);
+
+  
   const handleCardSelection = (index) => {
     if (selectedCards.includes(index)) {
       setSelectedCards(selectedCards.filter((cardIndex) => cardIndex !== index));
@@ -34,21 +26,26 @@ const Home = () => {
   
   const handleClear = () => {
     setData(data.filter((item, index) => selectedCards.includes(index)));
+    setSelectedCards([]);
   };
 
   const handleLoad = async () => {
     try {
       const res = await axios.get(
-        `https://dog.ceo/api/breeds/image/random/${data.length}`
+        `https://dog.ceo/api/breeds/image/random/${number}`
       );
       const newImages = res.data.message;
-      const newData = [...data];
-      newData.forEach((item, index) => {
-        if (!selectedCards.includes(index)) {
-          newData[index] = newImages.shift();
-        }
+      let newData = [...data];
+  
+      selectedCards.forEach((index) => {
+        newData[index] = newImages.shift();
       });
+  
+      const additionalCards = newImages.slice(0, number - selectedCards.length);
+      newData = newData.concat(additionalCards);
+  
       setData(newData);
+      setSelectedCards([]);
     } catch (error) {
       console.error(error);
     }
@@ -79,7 +76,11 @@ const Home = () => {
                 key={index}
                 onClick={() => handleCardSelection(index)}
               >
-                <img src={item} alt='' />
+                <img src={item} alt='dog' />
+                {
+                  selectedCards.includes(index) ? <div className="overlay"><FontAwesomeIcon className='icon' icon={faCheckCircle}/></div> : ""
+                }
+                
               </div>
             ))}
         </div>
